@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Comparison Slideshow</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0a0a0a;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 25px;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .controls button {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .controls button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .controls button:active {
+            transform: translateY(0);
+        }
+
+        .controls button i {
+            margin-right: 5px;
+        }
+
+        .indicator {
+            display: flex;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: white;
+            width: 30px;
+            border-radius: 5px;
+        }
+
+        .label {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .label.show {
+            opacity: 1;
+        }
+
+        .play-pause {
+            background: rgba(124, 58, 237, 0.9) !important;
+            border-color: rgba(124, 58, 237, 1) !important;
+        }
+
+        .play-pause:hover {
+            background: rgba(124, 58, 237, 1) !important;
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .home-btn i {
+            margin-right: 8px;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <a href="index.html" class="home-btn">
+        <i class="fa-solid fa-home"></i> Back to Home
+    </a>
+
+    <div class="slideshow-container">
+        <div class="slide active" data-label="Old Dashboard">
+            <iframe src="component/old/dashboard.html"></iframe>
+        </div>
+        <div class="slide" data-label="New Dashboard">
+            <iframe src="component/new/dashboard.html"></iframe>
+        </div>
+        <div class="slide" data-label="Old Application Settings">
+            <iframe src="component/old/application_setting.html"></iframe>
+        </div>
+        <div class="slide" data-label="New Application Settings">
+            <iframe src="component/new/application_setting.html"></iframe>
+        </div>
+        <div class="slide" data-label="Old Profile Settings">
+            <iframe src="component/old/profile_setting..html"></iframe>
+        </div>
+        <div class="slide" data-label="New Profile Settings">
+            <iframe src="component/new/profile_setting..html"></iframe>
+        </div>
+        <div class="slide" data-label="Old UI Kit Builder">
+            <iframe src="component/old/ui_kit_builder.html"></iframe>
+        </div>
+        <div class="slide" data-label="New UI Kit Builder">
+            <iframe src="component/new/ui_kit_builder.html"></iframe>
+        </div>
+        <div class="slide" data-label="Old UI Kit Builder Sidebar">
+            <iframe src="component/old/ui_kit_builder_sidebar.html"></iframe>
+        </div>
+        <div class="slide" data-label="New UI Kit Builder Sidebar">
+            <iframe src="component/new/ui_kit_builder_sidebar.html"></iframe>
+        </div>
+    </div>
+
+    <div class="label" id="slideLabel">Old Dashboard</div>
+
+    <div class="controls">
+        <button onclick="prevSlide()">
+            <i class="fa-solid fa-chevron-left"></i> Previous
+        </button>
+        
+        <div class="indicator">
+            <span class="dot active" onclick="goToSlide(0)"></span>
+            <span class="dot" onclick="goToSlide(1)"></span>
+            <span class="dot" onclick="goToSlide(2)"></span>
+            <span class="dot" onclick="goToSlide(3)"></span>
+            <span class="dot" onclick="goToSlide(4)"></span>
+            <span class="dot" onclick="goToSlide(5)"></span>
+            <span class="dot" onclick="goToSlide(6)"></span>
+            <span class="dot" onclick="goToSlide(7)"></span>
+            <span class="dot" onclick="goToSlide(8)"></span>
+            <span class="dot" onclick="goToSlide(9)"></span>
+        </div>
+        
+        <button onclick="nextSlide()">
+            Next <i class="fa-solid fa-chevron-right"></i>
+        </button>
+        
+        <button class="play-pause" onclick="toggleAutoplay()">
+            <i class="fa-solid fa-pause" id="playIcon"></i>
+        </button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        let autoplayInterval;
+        let isPlaying = true;
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        const label = document.getElementById('slideLabel');
+        const playIcon = document.getElementById('playIcon');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                dots[i].classList.remove('active');
+            });
+            
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+            dots[currentSlide].classList.add('active');
+            
+            // Update label
+            const labelText = slides[currentSlide].getAttribute('data-label');
+            label.textContent = labelText;
+            label.classList.add('show');
+            
+            setTimeout(() => {
+                label.classList.remove('show');
+            }, 2000);
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        function goToSlide(index) {
+            showSlide(index);
+        }
+
+        function startAutoplay() {
+            autoplayInterval = setInterval(nextSlide, 5000);
+            isPlaying = true;
+            playIcon.className = 'fa-solid fa-pause';
+        }
+
+        function stopAutoplay() {
+            clearInterval(autoplayInterval);
+            isPlaying = false;
+            playIcon.className = 'fa-solid fa-play';
+        }
+
+        function toggleAutoplay() {
+            if (isPlaying) {
+                stopAutoplay();
+            } else {
+                startAutoplay();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') prevSlide();
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === ' ') {
+                e.preventDefault();
+                toggleAutoplay();
+            }
+        });
+
+        // Show initial label
+        setTimeout(() => {
+            label.classList.add('show');
+            setTimeout(() => label.classList.remove('show'), 2000);
+        }, 500);
+
+        // Start autoplay
+        startAutoplay();
+    </script>
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Components Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            margin-bottom: 50px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .card-preview {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-preview iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none;
+            transform: scale(0.5);
+            transform-origin: top left;
+            width: 200%;
+            height: 200%;
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .card-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f7fafc;
+            color: #4a5568;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-secondary:hover {
+            background: #edf2f7;
+            border-color: #cbd5e0;
+        }
+
+        .slideshow-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .slideshow-section h2 {
+            font-size: 32px;
+            color: #1a202c;
+            margin-bottom: 15px;
+        }
+
+        .slideshow-section p {
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .slideshow-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+        }
+
+        .slideshow-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.4);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #edf2f7;
+            color: #4a5568;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .badge.new {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .badge.old {
+            background: #e2e8f0;
+            color: #718096;
+        }
+
+        .features {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .feature-tag {
+            padding: 6px 12px;
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #4a5568;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .slideshow-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1><i class="fa-solid fa-rocket"></i> Dashboard Components</h1>
+        <p class="subtitle">Explore and compare different dashboard implementations</p>
+
+        <div class="grid">
+            <!-- Old Dashboard Card -->
+            <div class="card" onclick="window.location.href='component/old/dashboard.html'">
+                <div class="card-preview">
+                    <iframe src="component/old/dashboard.html" scrolling="no"></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="badge old">Legacy</span>
+                    <h2 class="card-title">Old Dashboard</h2>
+                    <p class="card-description">
+                        Classic dashboard implementation with essential features and clean design.
+                    </p>
+                    <div class="features">
+                        <span class="feature-tag"><i class="fa-solid fa-palette"></i> Light Theme</span>
+                        <span class="feature-tag"><i class="fa-solid fa-chart-simple"></i> Basic Stats</span>
+                        <span class="feature-tag"><i class="fa-solid fa-gauge"></i> Usage Metrics</span>
+                    </div>
+                    <div class="card-buttons" style="margin-top: 20px;">
+                        <a href="component/old/dashboard.html" class="btn btn-primary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                        <a href="component/old/dashboard.html" target="_blank" class="btn btn-secondary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Dashboard Card -->
+            <div class="card" onclick="window.location.href='component/new/dashboard.html'">
+                <div class="card-preview">
+                    <iframe src="component/new/dashboard.html" scrolling="no"></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="badge new">Enhanced</span>
+                    <h2 class="card-title">New Dashboard</h2>
+                    <p class="card-description">
+                        Modern dashboard with advanced features, multiple themes, and enhanced interactivity.
+                    </p>
+                    <div class="features">
+                        <span class="feature-tag"><i class="fa-solid fa-moon"></i> Dark Mode</span>
+                        <span class="feature-tag"><i class="fa-solid fa-meteor"></i> Comet Theme</span>
+                        <span class="feature-tag"><i class="fa-solid fa-grip-vertical"></i> Drag & Drop</span>
+                        <span class="feature-tag"><i class="fa-solid fa-bars"></i> Collapsible</span>
+                    </div>
+                    <div class="card-buttons" style="margin-top: 20px;">
+                        <a href="component/new/dashboard.html" class="btn btn-primary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                        <a href="component/new/dashboard.html" target="_blank" class="btn btn-secondary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Old Application Settings Card -->
+            <div class="card" onclick="window.location.href='component/old/application_setting.html'">
+                <div class="card-preview">
+                    <iframe src="component/old/application_setting.html" scrolling="no"></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="badge old">Legacy</span>
+                    <h2 class="card-title">Old Application Settings</h2>
+                    <p class="card-description">
+                        Classic application settings interface with configuration options.
+                    </p>
+                    <div class="features">
+                        <span class="feature-tag"><i class="fa-solid fa-gear"></i> Settings</span>
+                        <span class="feature-tag"><i class="fa-solid fa-sliders"></i> Configuration</span>
+                    </div>
+                    <div class="card-buttons" style="margin-top: 20px;">
+                        <a href="component/old/application_setting.html" class="btn btn-primary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                        <a href="component/old/application_setting.html" target="_blank" class="btn btn-secondary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Application Settings Card -->
+            <div class="card" onclick="window.location.href='component/new/application_setting.html'">
+                <div class="card-preview">
+                    <iframe src="component/new/application_setting.html" scrolling="no"></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="badge new">Enhanced</span>
+                    <h2 class="card-title">New Application Settings</h2>
+                    <p class="card-description">
+                        Modern application settings with improved UI and advanced options.
+                    </p>
+                    <div class="features">
+                        <span class="feature-tag"><i class="fa-solid fa-gear"></i> Settings</span>
+                        <span class="feature-tag"><i class="fa-solid fa-palette"></i> Themes</span>
+                        <span class="feature-tag"><i class="fa-solid fa-sliders"></i> Advanced</span>
+                    </div>
+                    <div class="card-buttons" style="margin-top: 20px;">
+                        <a href="component/new/application_setting.html" class="btn btn-primary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                        <a href="component/new/application_setting.html" target="_blank" class="btn btn-secondary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Old Profile Settings Card -->
+            <div class="card" onclick="window.location.href='component/old/profile_setting..html'">
+                <div class="card-preview">
+                    <iframe src="component/old/profile_setting..html" scrolling="no"></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="badge old">Legacy</span>
+                    <h2 class="card-title">Old Profile Settings</h2>
+                    <p class="card-description">
+                        Classic profile management interface with user settings.
+                    </p>
+                    <div class="features">
+                        <span class="feature-tag"><i class="fa-solid fa-user"></i> Profile</span>
+                        <span class="feature-tag"><i class="fa-solid fa-lock"></i> Security</span>
+                    </div>
+                    <div class="card-buttons" style="margin-top: 20px;">
+                        <a href="component/old/profile_setting..html" class="btn btn-primary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                        <a href="component/old/profile_setting..html" target="_blank" class="btn btn-secondary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New Profile Settings Card -->
+            <div class="card" onclick="window.location.href='component/new/profile_setting..html'">
+                <div class="card-preview">
+                    <iframe src="component/new/profile_setting..html" scrolling="no"></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="badge new">Enhanced</span>
+                    <h2 class="card-title">New Profile Settings</h2>
+                    <p class="card-description">
+                        Modern profile settings with enhanced features and better UX.
+                    </p>
+                    <div class="features">
+                        <span class="feature-tag"><i class="fa-solid fa-user"></i> Profile</span>
+                        <span class="feature-tag"><i class="fa-solid fa-lock"></i> Security</span>
+                        <span class="feature-tag"><i class="fa-solid fa-palette"></i> Themes</span>
+                    </div>
+                    <div class="card-buttons" style="margin-top: 20px;">
+                        <a href="component/new/profile_setting..html" class="btn btn-primary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                        <a href="component/new/profile_setting..html" target="_blank" class="btn btn-secondary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Old UI Kit Builder Card -->
+            <div class="card" onclick="window.location.href='component/old/ui_kit_builder.html'">
+                <div class="card-preview">
+                    <iframe src="component/old/ui_kit_builder.html" scrolling="no"></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="badge old">Legacy</span>
+                    <h2 class="card-title">Old UI Kit Builder</h2>
+                    <p class="card-description">
+                        Classic UI kit builder interface for component creation.
+                    </p>
+                    <div class="features">
+                        <span class="feature-tag"><i class="fa-solid fa-paintbrush"></i> Builder</span>
+                        <span class="feature-tag"><i class="fa-solid fa-cube"></i> Components</span>
+                    </div>
+                    <div class="card-buttons" style="margin-top: 20px;">
+                        <a href="component/old/ui_kit_builder.html" class="btn btn-primary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                        <a href="component/old/ui_kit_builder.html" target="_blank" class="btn btn-secondary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New UI Kit Builder Card -->
+            <div class="card" onclick="window.location.href='component/new/ui_kit_builder.html'">
+                <div class="card-preview">
+                    <iframe src="component/new/ui_kit_builder.html" scrolling="no"></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="badge new">Enhanced</span>
+                    <h2 class="card-title">New UI Kit Builder</h2>
+                    <p class="card-description">
+                        Interactive UI kit builder for creating custom components and themes.
+                    </p>
+                    <div class="features">
+                        <span class="feature-tag"><i class="fa-solid fa-paintbrush"></i> Builder</span>
+                        <span class="feature-tag"><i class="fa-solid fa-cube"></i> Components</span>
+                        <span class="feature-tag"><i class="fa-solid fa-code"></i> Customizable</span>
+                    </div>
+                    <div class="card-buttons" style="margin-top: 20px;">
+                        <a href="component/new/ui_kit_builder.html" class="btn btn-primary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                        <a href="component/new/ui_kit_builder.html" target="_blank" class="btn btn-secondary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Old UI Kit Builder Sidebar Card -->
+            <div class="card" onclick="window.location.href='component/old/ui_kit_builder_sidebar.html'">
+                <div class="card-preview">
+                    <iframe src="component/old/ui_kit_builder_sidebar.html" scrolling="no"></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="badge old">Legacy</span>
+                    <h2 class="card-title">Old UI Kit Builder Sidebar</h2>
+                    <p class="card-description">
+                        Classic sidebar component for the UI kit builder.
+                    </p>
+                    <div class="features">
+                        <span class="feature-tag"><i class="fa-solid fa-bars"></i> Sidebar</span>
+                        <span class="feature-tag"><i class="fa-solid fa-toolbox"></i> Tools</span>
+                    </div>
+                    <div class="card-buttons" style="margin-top: 20px;">
+                        <a href="component/old/ui_kit_builder_sidebar.html" class="btn btn-primary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                        <a href="component/old/ui_kit_builder_sidebar.html" target="_blank" class="btn btn-secondary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- New UI Kit Builder Sidebar Card -->
+            <div class="card" onclick="window.location.href='component/new/ui_kit_builder_sidebar.html'">
+                <div class="card-preview">
+                    <iframe src="component/new/ui_kit_builder_sidebar.html" scrolling="no"></iframe>
+                </div>
+                <div class="card-content">
+                    <span class="badge new">Enhanced</span>
+                    <h2 class="card-title">New UI Kit Builder Sidebar</h2>
+                    <p class="card-description">
+                        Sidebar component for the UI kit builder with navigation and tools.
+                    </p>
+                    <div class="features">
+                        <span class="feature-tag"><i class="fa-solid fa-bars"></i> Sidebar</span>
+                        <span class="feature-tag"><i class="fa-solid fa-toolbox"></i> Tools</span>
+                    </div>
+                    <div class="card-buttons" style="margin-top: 20px;">
+                        <a href="component/new/ui_kit_builder_sidebar.html" class="btn btn-primary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
+                        <a href="component/new/ui_kit_builder_sidebar.html" target="_blank" class="btn btn-secondary" onclick="event.stopPropagation()">
+                            <i class="fa-solid fa-arrow-up-right-from-square"></i> Open
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slideshow Section -->
+        <div class="slideshow-section">
+            <h2><i class="fa-solid fa-play-circle"></i> Compare Side by Side</h2>
+            <p>Watch an automated slideshow that alternates between old and new dashboards to see the differences</p>
+            <a href="slideshow.html" class="slideshow-btn">
+                <i class="fa-solid fa-images"></i>
+                Launch Slideshow
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CometChat Dashboard - Ultimate Version</title>
+    
+    <!-- Tailwind Config defined BEFORE usage to ensure variables are picked up -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Enable class-based dark mode
+            theme: {
+                extend: {
+                    colors: {
+                        // Semantic Layout Colors
+                        app: 'var(--bg-app)',
+                        surface: 'var(--bg-surface)',
+                        surfaceHover: 'var(--bg-hover)',
+                        borderCustom: 'var(--border-custom)',
+                        
+                        // Semantic Text Colors
+                        textMain: 'var(--text-main)',
+                        textMuted: 'var(--text-muted)',
+                        textSubtle: 'var(--text-subtle)',
+                        accent: 'var(--accent-primary)',
+                        
+                        // Semantic Icon Backgrounds
+                        iconBgBlue: 'var(--icon-bg-blue)',
+                        iconBgGreen: 'var(--icon-bg-green)',
+                        iconBgPurple: 'var(--icon-bg-purple)',
+                        iconBgRed: 'var(--icon-bg-red)',
+                        iconBgIndigo: 'var(--icon-bg-indigo)',
+
+                        // Semantic Icon Text Colors
+                        iconTextBlue: 'var(--icon-text-blue)',
+                        iconTextGreen: 'var(--icon-text-green)',
+                        iconTextPurple: 'var(--icon-text-purple)',
+                        iconTextRed: 'var(--icon-text-red)',
+                        iconTextIndigo: 'var(--icon-text-indigo)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           1. Base Theme (Light Mode Default)
+           ========================================= */
+        :root {
+            /* Layout */
+            --bg-app: #f9fafb;
+            --bg-surface: #ffffff;
+            --bg-hover: #f3f4f6;
+            --border-custom: #e5e7eb;
+            
+            /* Typography */
+            --text-main: #111827;     /* gray-900 */
+            --text-muted: #4b5563;    /* gray-600 */
+            --text-subtle: #9ca3af;   /* gray-400 */
+            --accent-primary: #2563eb; /* blue-600 */
+
+            /* Icon Backgrounds (Pastels) */
+            --icon-bg-blue: #eff6ff;
+            --icon-bg-green: #f0fdf4;
+            --icon-bg-purple: #faf5ff;
+            --icon-bg-red: #fef2f2;
+            --icon-bg-indigo: #e0e7ff;
+
+            /* Icon Text (Strong Colors) */
+            --icon-text-blue: #2563eb;
+            --icon-text-green: #16a34a;
+            --icon-text-purple: #9333ea;
+            --icon-text-red: #dc2626;
+            --icon-text-indigo: #4f46e5;
+        }
+
+        /* =========================================
+           2. Dark Theme (Neutral / True Dark)
+           ========================================= */
+        html[data-theme="dark"] {
+            /* Layout - Pure Grays/Blacks */
+            --bg-app: #0a0a0a;     /* Nearly Black */
+            --bg-surface: #171717; /* Neutral Gray 900 */
+            --bg-hover: #262626;   /* Neutral Gray 800 */
+            --border-custom: #262626;
+            
+            /* Typography */
+            --text-main: #ededed;
+            --text-muted: #a3a3a3;
+            --text-subtle: #525252;
+            --accent-primary: #3b82f6;
+
+            /* Icon Backgrounds */
+            --icon-bg-blue: #1e3a8a;
+            --icon-bg-green: #14532d;
+            --icon-bg-purple: #581c87;
+            --icon-bg-red: #7f1d1d;
+            --icon-bg-indigo: #312e81;
+
+            /* Icon Text */
+            --icon-text-blue: #93c5fd;
+            --icon-text-green: #86efac;
+            --icon-text-purple: #d8b4fe;
+            --icon-text-red: #fca5a5;
+            --icon-text-indigo: #a5b4fc;
+        }
+
+        /* =========================================
+           3. Comet Theme (Deep Space / Starry)
+           ========================================= */
+        html[data-theme="comet"] {
+            /* Layout - Deep Blues */
+            --bg-app: #020617;     /* Slate 950 */
+            --bg-surface: #0f172a; /* Slate 900 */
+            --bg-hover: #1e293b;   /* Slate 800 */
+            --border-custom: #1e293b;
+            
+            /* Typography */
+            --text-main: #f8fafc;  /* Slate 50 */
+            --text-muted: #94a3b8; /* Slate 400 */
+            --text-subtle: #475569; /* Slate 600 */
+            --accent-primary: #a78bfa; /* Violet 400 */
+
+            /* Icon Backgrounds (Glassy/Neon) */
+            --icon-bg-blue: rgba(56, 189, 248, 0.1);
+            --icon-bg-green: rgba(74, 222, 128, 0.1);
+            --icon-bg-purple: rgba(192, 132, 252, 0.1);
+            --icon-bg-red: rgba(248, 113, 113, 0.1);
+            --icon-bg-indigo: rgba(129, 140, 248, 0.1);
+
+            /* Icon Text (Neon) */
+            --icon-text-blue: #38bdf8;
+            --icon-text-green: #4ade80;
+            --icon-text-purple: #c084fc;
+            --icon-text-red: #f87171;
+            --icon-text-indigo: #818cf8;
+        }
+
+        /* Special Starry Background Logic for Comet Theme */
+        html[data-theme="comet"] .bg-app {
+            background-color: var(--bg-app);
+            background-image: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            background-position: 0 0, 40px 60px, 130px 270px;
+        }
+        
+        /* Subtle glow for content containers in Comet theme */
+        html[data-theme="comet"] .bg-surface {
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.05); /* Slight purple glow */
+            border: 1px solid rgba(148, 163, 184, 0.1); /* Subtle border for glass feel */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-app);
+            color: var(--text-main);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Smooth Transitions */
+        .theme-transition, 
+        .theme-transition * {
+            transition-property: background-color, border-color, color, fill, stroke, background-image, width, padding, opacity, display;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 300ms;
+        }
+
+        /* Scrollbar */
+        aside::-webkit-scrollbar {
+            width: 6px;
+        }
+        aside::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        aside::-webkit-scrollbar-thumb {
+            background-color: var(--border-custom);
+            border-radius: 20px;
+        }
+
+        /* Usage Bar */
+        .usage-bar {
+            height: 24px;
+            width: 4px;
+            background-color: var(--bg-hover);
+            border-radius: 2px;
+            margin-right: 2px;
+        }
+        .usage-bar.filled {
+            background-color: var(--accent-primary);
+        }
+
+        /* Floating Chat Widget */
+        .chat-widget {
+            position: fixed;
+            bottom: 40px;
+            right: 0;
+            background-color: #7c3aed;
+            color: white;
+            padding: 12px 16px;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            z-index: 50;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+        }
+
+        /* Sidebar Collapse Styles */
+        #sidebar.collapsed {
+            width: 5rem; /* w-20 */
+        }
+
+        #sidebar.collapsed .sidebar-text {
+            display: none;
+        }
+
+        #sidebar.collapsed .sidebar-header {
+            justify-content: center;
+        }
+
+        #sidebar.collapsed .nav-item {
+            justify-content: center;
+        }
+        
+        #sidebar.collapsed .nav-item i:first-child {
+            margin-right: 0;
+        }
+        
+        /* Quick Link Edit Styles */
+        .delete-btn {
+            display: none; /* Hidden by default */
+        }
+        
+        .editing .delete-btn {
+            display: block;
+        }
+        
+        .editing .arrow-icon {
+            display: none;
+        }
+        
+        .add-link-btn {
+            display: none;
+        }
+        
+        .editing .add-link-btn {
+            display: flex;
+        }
+
+        /* Modal Styles */
+        #modalOverlay {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- DRAG & DROP STYLES --- */
+        .draggable-widget {
+            position: relative;
+        }
+        
+        /* The Drag Handle */
+        .drag-handle {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            cursor: grab;
+            padding: 6px;
+            border-radius: 4px;
+            color: var(--text-subtle);
+            opacity: 0; /* Hidden by default */
+            transition: opacity 0.2s, background-color 0.2s;
+            z-index: 20;
+        }
+        
+        /* Show handle on hover */
+        .draggable-widget:hover .drag-handle {
+            opacity: 1;
+        }
+        
+        .drag-handle:hover {
+            background-color: var(--bg-hover);
+            color: var(--text-main);
+        }
+
+        /* Style when dragging */
+        .draggable-widget.dragging {
+            opacity: 0.4;
+            border: 2px dashed var(--accent-primary);
+        }
+
+        /* Style for Drop Zone Indicator (optional, we use native behavior mostly) */
+        .draggable-widget.over {
+             border-top: 2px solid var(--accent-primary);
+        }
+        
+        /* Specific adjustments for Charts Row which has no background itself */
+        #widget-charts {
+            /* Ensure it has a relative context even if transparent */
+            position: relative; 
+        }
+        #widget-charts .drag-handle {
+            top: -30px; /* Position it above the charts row */
+            right: 0;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Left Sidebar -->
+        <aside id="sidebar" class="w-64 bg-surface border-r border-borderCustom flex flex-col flex-shrink-0 overflow-y-auto theme-transition">
+            
+            <!-- Sidebar Header with Toggle -->
+            <div class="p-5 flex items-center justify-between sidebar-header theme-transition">
+                <h1 class="text-2xl font-bold text-textMain tracking-tight sidebar-text whitespace-nowrap">cometchat</h1>
+                <button id="toggleSidebarBtn" class="p-1 rounded text-textSubtle hover:text-textMain hover:bg-surfaceHover focus:outline-none transition-colors">
+                    <i class="fa-solid fa-bars text-lg"></i>
+                </button>
+            </div>
+
+            <nav class="flex-1 px-3 space-y-1">
+                <!-- General Section -->
+                <div class="pt-2 pb-1">
+                    <p class="px-3 text-xs font-semibold text-textSubtle uppercase tracking-wider sidebar-text whitespace-nowrap transition-opacity">General</p>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md bg-surfaceHover text-textMain mt-2 theme-transition nav-item">
+                        <i class="fa-regular fa-id-card w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">Overview</span>
+                    </a>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-textMuted hover:text-textMain hover:bg-surfaceHover mt-1 theme-transition nav-item">
+                        <i class="fa-solid fa-users w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">User & Groups</span>
+                        <i class="fa-solid fa-chevron-down ml-auto text-xs text-textSubtle sidebar-text"></i>
+                    </a>
+                </div>
+
+                <!-- Products Section -->
+                <div class="pt-4 pb-1">
+                    <p class="px-3 text-xs font-semibold text-textSubtle uppercase tracking-wider sidebar-text whitespace-nowrap transition-opacity">Products</p>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-textMuted hover:text-textMain hover:bg-surfaceHover mt-2 theme-transition nav-item">
+                        <i class="fa-regular fa-comments w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">Chats</span>
+                        <i class="fa-solid fa-chevron-down ml-auto text-xs text-textSubtle sidebar-text"></i>
+                    </a>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-textMuted hover:text-textMain hover:bg-surfaceHover mt-1 theme-transition nav-item">
+                        <i class="fa-solid fa-phone w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">Calls</span>
+                        <i class="fa-solid fa-chevron-down ml-auto text-xs text-textSubtle sidebar-text"></i>
+                    </a>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-textMuted hover:text-textMain hover:bg-surfaceHover mt-1 theme-transition nav-item">
+                        <i class="fa-solid fa-shield-halved w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">Moderation</span>
+                        <i class="fa-solid fa-chevron-down ml-auto text-xs text-textSubtle sidebar-text"></i>
+                    </a>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-textMuted hover:text-textMain hover:bg-surfaceHover mt-1 theme-transition nav-item">
+                        <i class="fa-solid fa-wand-magic-sparkles w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">AI Agents</span>
+                        <i class="fa-solid fa-chevron-down ml-auto text-xs text-textSubtle sidebar-text"></i>
+                    </a>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-textMuted hover:text-textMain hover:bg-surfaceHover mt-1 theme-transition nav-item">
+                        <i class="fa-regular fa-bell w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">Notifications</span>
+                        <i class="fa-solid fa-chevron-down ml-auto text-xs text-textSubtle sidebar-text"></i>
+                    </a>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-textMuted hover:text-textMain hover:bg-surfaceHover mt-1 theme-transition nav-item">
+                        <i class="fa-solid fa-chart-column w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">Insights</span>
+                    </a>
+                </div>
+
+                <!-- Account Section -->
+                <div class="pt-4 pb-1">
+                    <p class="px-3 text-xs font-semibold text-textSubtle uppercase tracking-wider sidebar-text whitespace-nowrap transition-opacity">Account</p>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-textMuted hover:text-textMain hover:bg-surfaceHover mt-2 theme-transition nav-item">
+                        <i class="fa-solid fa-border-all w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">Application</span>
+                        <i class="fa-solid fa-chevron-down ml-auto text-xs text-textSubtle sidebar-text"></i>
+                    </a>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-textMuted hover:text-textMain hover:bg-surfaceHover mt-1 theme-transition nav-item">
+                        <i class="fa-regular fa-user w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">Profile</span>
+                        <i class="fa-solid fa-chevron-down ml-auto text-xs text-textSubtle sidebar-text"></i>
+                    </a>
+                    <a href="#" class="group flex items-center px-3 py-2 text-sm font-medium rounded-md text-textMuted hover:text-textMain hover:bg-surfaceHover mt-1 theme-transition nav-item">
+                        <i class="fa-solid fa-book-open w-5 text-textSubtle mr-2 theme-transition"></i>
+                        <span class="sidebar-text whitespace-nowrap">Resources</span>
+                        <i class="fa-solid fa-chevron-down ml-auto text-xs text-textSubtle sidebar-text"></i>
+                    </a>
+                </div>
+            </nav>
+
+            <div class="p-4 border-t border-borderCustom mt-auto">
+                <div class="flex items-center justify-between bg-surfaceHover p-2 rounded-lg border border-borderCustom cursor-pointer theme-transition nav-item">
+                    <div class="flex items-center">
+                        <div class="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs flex-shrink-0">T</div>
+                        <div class="ml-3 sidebar-text">
+                            <p class="text-xs font-medium text-textMain whitespace-nowrap">Test</p>
+                            <p class="text-[10px] text-textSubtle whitespace-nowrap">16725115a29d455f3</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-up text-xs text-textSubtle sidebar-text"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto bg-app focus:outline-none theme-transition">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-6">
+                
+                <!-- Header with Theme Toggle -->
+                <div class="flex justify-between items-center mb-6">
+                    <h1 class="text-2xl font-bold text-textMain">Dashboard</h1>
+                    <div class="flex items-center gap-3">
+                        
+                        <!-- Theme Toggle Component -->
+                        <div class="bg-surface border border-borderCustom rounded-md flex p-1 shadow-sm theme-transition">
+                            <button onclick="setTheme('light')" class="p-1.5 rounded hover:bg-surfaceHover text-textSubtle hover:text-yellow-500 transition-colors" title="Light Mode">
+                                <i class="fa-regular fa-sun"></i>
+                            </button>
+                            <button onclick="setTheme('dark')" class="p-1.5 rounded hover:bg-surfaceHover text-textSubtle hover:text-blue-400 transition-colors" title="Dark Mode">
+                                <i class="fa-regular fa-moon"></i>
+                            </button>
+                            <button onclick="setTheme('comet')" class="p-1.5 rounded hover:bg-surfaceHover text-textSubtle hover:text-purple-500 transition-colors" title="Comet Mode">
+                                <i class="fa-solid fa-meteor"></i>
+                            </button>
+                        </div>
+
+                        <div class="h-6 w-px bg-borderCustom mx-1"></div>
+
+                        <button class="bg-surface border border-borderCustom text-textMuted px-3 py-1.5 rounded text-sm font-medium hover:bg-surfaceHover hover:text-textMain theme-transition">Get Help</button>
+                        <button class="bg-surface border border-borderCustom text-textMuted px-3 py-1.5 rounded text-sm font-medium hover:bg-surfaceHover hover:text-textMain theme-transition">App Credentials</button>
+                        <button class="bg-black text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-gray-800">Documentation</button>
+                    </div>
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-6">
+                    
+                    <!-- Center Column (Main Stats with Drag and Drop) -->
+                    <div id="widgets-container" class="flex-1 grid grid-cols-1 gap-6 content-start">
+
+                        <!-- Get Started Section -->
+                        <div id="widget-get-started" class="draggable-widget bg-surface rounded-lg shadow-sm border border-borderCustom p-6 theme-transition" draggable="true">
+                            <div class="drag-handle"><i class="fa-solid fa-grip-vertical"></i></div>
+                            <h2 class="text-sm font-medium text-textMain mb-4">Get Started / Integrate <span class="text-textSubtle font-normal">(Start integrating CometChat)</span></h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <!-- Card 1 -->
+                                <div class="border border-borderCustom rounded-lg p-4 hover:border-blue-400 hover:shadow-sm cursor-pointer transition theme-transition group">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <!-- Replaced hardcoded color with semantic variable -->
+                                        <div class="p-2 bg-iconBgBlue rounded-md text-iconTextBlue theme-transition">
+                                            <i class="fa-regular fa-comment-dots"></i>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-textSubtle group-hover:text-textMuted"></i>
+                                    </div>
+                                    <h3 class="text-sm font-medium text-textMain">Chat & Messaging</h3>
+                                </div>
+                                <!-- Card 2 -->
+                                <div class="border border-borderCustom rounded-lg p-4 hover:border-green-400 hover:shadow-sm cursor-pointer transition theme-transition group">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="p-2 bg-iconBgGreen rounded-md text-iconTextGreen theme-transition">
+                                            <i class="fa-solid fa-phone"></i>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-textSubtle group-hover:text-textMuted"></i>
+                                    </div>
+                                    <h3 class="text-sm font-medium text-textMain">Voice & Video Calling</h3>
+                                </div>
+                                <!-- Card 3 -->
+                                <div class="border border-borderCustom rounded-lg p-4 hover:border-purple-400 hover:shadow-sm cursor-pointer transition theme-transition group">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="p-2 bg-iconBgPurple rounded-md text-iconTextPurple theme-transition">
+                                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-textSubtle group-hover:text-textMuted"></i>
+                                    </div>
+                                    <h3 class="text-sm font-medium text-textMain">AI Agents</h3>
+                                </div>
+                                <!-- Card 4 -->
+                                <div class="border border-borderCustom rounded-lg p-4 hover:border-red-400 hover:shadow-sm cursor-pointer transition theme-transition group">
+                                    <div class="flex justify-between items-start mb-2">
+                                        <div class="p-2 bg-iconBgRed rounded-md text-iconTextRed theme-transition">
+                                            <i class="fa-solid fa-shield-halved"></i>
+                                        </div>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-xs text-textSubtle group-hover:text-textMuted"></i>
+                                    </div>
+                                    <h3 class="text-sm font-medium text-textMain">Moderation</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Usage Section -->
+                        <div id="widget-usage" class="draggable-widget bg-surface rounded-lg shadow-sm border border-borderCustom p-6 theme-transition" draggable="true">
+                            <div class="drag-handle"><i class="fa-solid fa-grip-vertical"></i></div>
+                            <h2 class="text-sm font-medium text-textMain mb-6">Usage <span class="text-textSubtle font-normal">(Current billing cycle)</span></h2>
+                            
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                <!-- Chats Usage -->
+                                <div>
+                                    <h3 class="text-xs font-bold text-textMain mb-4">Chats</h3>
+                                    <!-- MAU -->
+                                    <div class="flex items-center mb-4">
+                                        <div class="w-24">
+                                            <div class="text-sm font-semibold text-textMain">MAU</div>
+                                            <div class="text-xs text-textSubtle"><span class="font-medium text-textMain">1</span> / 100</div>
+                                        </div>
+                                        <div class="flex-1 flex h-6 ml-4" id="mau-bars"></div>
+                                    </div>
+                                    <!-- PCC -->
+                                    <div class="flex items-center">
+                                        <div class="w-24">
+                                            <div class="text-sm font-semibold text-textMain">PCC</div>
+                                            <div class="text-xs text-textSubtle"><span class="font-medium text-textMain">1</span> / 25</div>
+                                        </div>
+                                        <div class="flex-1 flex h-6 ml-4" id="pcc-bars"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Calls Usage -->
+                                <div>
+                                    <h3 class="text-xs font-bold text-textMain mb-4">Calls</h3>
+                                    <!-- Voice Minutes -->
+                                    <div class="flex items-center mb-4">
+                                        <div class="w-28">
+                                            <div class="text-xs text-textSubtle">Voice Minutes</div>
+                                            <div class="text-xs text-textSubtle"><span class="font-bold text-textMain text-sm">0</span> / 2500</div>
+                                        </div>
+                                        <div class="flex-1 flex h-6 ml-4" id="voice-bars"></div>
+                                    </div>
+                                    <!-- Video Minutes -->
+                                    <div class="flex items-center">
+                                        <div class="w-28">
+                                            <div class="text-xs text-textSubtle">Video Minutes</div>
+                                            <div class="text-xs text-textSubtle"><span class="font-bold text-textMain text-sm">0</span> / 2500</div>
+                                        </div>
+                                        <div class="flex-1 flex h-6 ml-4" id="video-bars"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Operational Data -->
+                        <div id="widget-operational" class="draggable-widget bg-surface rounded-lg shadow-sm border border-borderCustom p-6 theme-transition" draggable="true">
+                            <div class="drag-handle"><i class="fa-solid fa-grip-vertical"></i></div>
+                            <h2 class="text-sm font-medium text-textMain mb-4">Operational Data <span class="text-textSubtle font-normal">(Current month)</span></h2>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 divide-y sm:divide-y-0 sm:divide-x divide-gray-100 dark:divide-gray-700 border-gray-100">
+                                <div class="px-2 pt-2 sm:pt-0">
+                                    <p class="text-xs text-textSubtle">Users active this month</p>
+                                    <p class="text-2xl font-bold text-textMain mt-1">0</p>
+                                </div>
+                                <div class="px-2 pt-2 sm:pt-0">
+                                    <p class="text-xs text-textSubtle">Voice minutes today</p>
+                                    <p class="text-2xl font-bold text-textMain mt-1">0</p>
+                                </div>
+                                <div class="px-2 pt-2 sm:pt-0">
+                                    <p class="text-xs text-textSubtle">Video minutes today</p>
+                                    <p class="text-2xl font-bold text-textMain mt-1">0</p>
+                                </div>
+                                <div class="px-2 pt-2 sm:pt-0">
+                                    <p class="text-xs text-textSubtle">Recording minutes today</p>
+                                    <p class="text-2xl font-bold text-textMain mt-1">0</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts Area -->
+                        <div id="widget-charts" class="draggable-widget grid grid-cols-1 lg:grid-cols-2 gap-6 pb-6" draggable="true">
+                            <div class="drag-handle"><i class="fa-solid fa-grip-vertical"></i></div>
+                            <!-- Peak Concurrent -->
+                            <div class="bg-surface rounded-lg shadow-sm border border-borderCustom p-6 h-64 flex flex-col theme-transition">
+                                <h3 class="text-xs font-bold text-textMuted">Peak concurrent connections</h3>
+                                <p class="text-xs text-textSubtle mb-4">Past 30 days</p>
+                                <div class="flex-1 flex items-end relative border-l border-b border-borderCustom">
+                                   <!-- Simulated Chart Line -->
+                                   <div class="absolute bottom-0 left-0 h-full w-full flex items-end px-2 space-x-1">
+                                       <div class="w-full h-1 bg-purple-400 opacity-20 rounded-t"></div>
+                                   </div>
+                                    <div class="absolute -left-6 top-1/2 text-[10px] text-textSubtle">1</div>
+                                    <div class="absolute -left-20 bottom-1/2 -rotate-90 text-[10px] text-textSubtle font-bold origin-right">Concurrent users</div>
+                                </div>
+                            </div>
+
+                            <!-- MAU Chart -->
+                            <div class="bg-surface rounded-lg shadow-sm border border-borderCustom p-6 h-64 flex flex-col justify-between theme-transition">
+                                <div>
+                                    <h3 class="text-xs font-bold text-textMuted">Monthly Active Users</h3>
+                                    <p class="text-xs text-textSubtle">Past 3 months</p>
+                                </div>
+                                <div class="flex flex-col items-center justify-center h-full text-center">
+                                    <div class="w-10 h-10 bg-surfaceHover rounded-full flex items-center justify-center mb-2 theme-transition">
+                                        <i class="fa-solid fa-chart-line text-textSubtle"></i>
+                                    </div>
+                                    <p class="text-xs text-textSubtle">No usage as yet</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right Sidebar -->
+                    <div class="w-full lg:w-80 space-y-6">
+                        
+                        <!-- Credentials Card -->
+                        <div class="bg-surface rounded-lg shadow-sm border border-borderCustom p-5 theme-transition">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-sm font-semibold text-textMain">Credentials</h3>
+                                <a href="#" class="text-xs text-blue-600 font-medium hover:underline">View All</a>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <p class="text-[10px] text-textSubtle uppercase font-semibold">App ID</p>
+                                    <div class="flex justify-between items-center mt-1">
+                                        <code class="text-sm text-textMain font-mono">16725115a29d455f3</code>
+                                        <i class="fa-regular fa-copy text-textSubtle hover:text-textMain cursor-pointer text-xs"></i>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <p class="text-[10px] text-textSubtle uppercase font-semibold">Region</p>
+                                    <div class="flex justify-between items-center mt-1">
+                                        <span class="text-sm text-textMain font-bold">IN</span>
+                                        <i class="fa-regular fa-copy text-textSubtle hover:text-textMain cursor-pointer text-xs"></i>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <p class="text-[10px] text-textSubtle uppercase font-semibold">Auth Key</p>
+                                    <div class="flex justify-between items-center mt-1">
+                                        <span class="text-sm text-textMain font-mono">**************************</span>
+                                        <div class="flex space-x-2 text-textSubtle">
+                                            <i class="fa-regular fa-eye-slash hover:text-textMain cursor-pointer text-xs"></i>
+                                            <i class="fa-regular fa-copy hover:text-textMain cursor-pointer text-xs"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Links -->
+                        <div class="bg-transparent pl-1" id="quick-links-section">
+                            <div class="flex justify-between items-center mb-3 pr-2">
+                                <h3 class="text-sm font-medium text-textMuted">Quick Links</h3>
+                                <div class="flex gap-2">
+                                    <button id="resetLinksBtn" class="hidden text-xs text-red-500 hover:text-red-700 font-medium transition-colors" title="Reset to default">Reset</button>
+                                    <button id="editLinksBtn" class="text-xs text-blue-600 hover:text-blue-800 font-medium transition-colors">Edit</button>
+                                </div>
+                            </div>
+                            
+                            <ul class="space-y-3" id="quick-links-list">
+                                <!-- Generated by JS -->
+                            </ul>
+
+                            <button id="addLinkBtn" class="add-link-btn w-full mt-4 flex items-center justify-center p-2 rounded border border-dashed border-borderCustom text-textSubtle hover:text-textMain hover:border-accent hover:bg-surfaceHover transition-all text-xs font-medium">
+                                <i class="fa-solid fa-plus mr-1.5"></i> Add Link
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Link Modal -->
+    <div id="addLinkModal" class="fixed inset-0 z-50 hidden flex items-center justify-center">
+        <div id="modalOverlay" class="absolute inset-0 transition-opacity"></div>
+        <div class="bg-surface rounded-lg shadow-xl w-full max-w-sm mx-4 p-6 relative z-10 border border-borderCustom theme-transition">
+            <h3 class="text-lg font-bold text-textMain mb-4">Add Quick Link</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-textSubtle mb-1">Title</label>
+                    <input type="text" id="linkTitle" class="w-full bg-app border border-borderCustom rounded p-2 text-sm text-textMain focus:outline-none focus:border-accent" placeholder="e.g. Server Status">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-textSubtle mb-1">Description</label>
+                    <input type="text" id="linkDesc" class="w-full bg-app border border-borderCustom rounded p-2 text-sm text-textMain focus:outline-none focus:border-accent" placeholder="e.g. Check system health">
+                </div>
+                <div>
+                    <label class="block text-xs font-medium text-textSubtle mb-1">Icon Style</label>
+                    <select id="linkIconType" class="w-full bg-app border border-borderCustom rounded p-2 text-sm text-textMain focus:outline-none focus:border-accent">
+                        <option value="purple-message">Purple - Message</option>
+                        <option value="blue-file">Blue - File/Doc</option>
+                        <option value="indigo-code">Indigo - Code</option>
+                        <option value="indigo-cubes">Indigo - Cubes</option>
+                        <option value="purple-help">Purple - Help</option>
+                        <option value="green-slack">Green - Slack</option>
+                        <option value="indigo-users">Indigo - Users</option>
+                        <option value="indigo-box">Indigo - Product</option>
+                        <option value="red-alert">Red - Alert</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex justify-end gap-3 mt-6">
+                <button id="cancelAddLink" class="px-3 py-1.5 rounded text-sm text-textMuted hover:bg-surfaceHover transition-colors">Cancel</button>
+                <button id="saveNewLink" class="px-3 py-1.5 rounded text-sm bg-accent text-white hover:opacity-90 transition-opacity">Add Link</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Chat Button -->
+    <div class="chat-widget">Chat with us</div>
+
+    <script>
+        // --- Theme Logic ---
+        function setTheme(theme) {
+            const html = document.documentElement;
+            html.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+        }
+
+        // --- Data for Quick Links ---
+        const defaultQuickLinks = [
+            { id: 1, title: "Create Support Ticket", desc: "Get help from our support team.", type: "purple-message" },
+            { id: 2, title: "Developer Docs", desc: "Browse comprehensive product docs.", type: "blue-file" },
+            { id: 3, title: "API Docs", desc: "Detailed API references and usage guides.", type: "indigo-code" },
+            { id: 4, title: "Sample Apps", desc: "Explore ready-to-use app examples on GitHub.", type: "indigo-cubes" },
+            { id: 5, title: "Help Center", desc: "Find solutions and troubleshooting guides.", type: "purple-help" },
+            { id: 6, title: "Slack Support", desc: "Join a shared Slack channel and get direct help.", type: "green-slack" },
+            { id: 7, title: "Community", desc: "Connect and collaborate with developers.", type: "indigo-users" },
+            { id: 8, title: "Product Updates", desc: "Stay informed on new features & improvements.", type: "indigo-box" }
+        ];
+
+        // Icon Style Map
+        const iconStyles = {
+            'purple-message': { bg: 'bg-iconBgPurple', text: 'text-iconTextPurple', icon: 'fa-regular fa-message' },
+            'blue-file': { bg: 'bg-iconBgBlue', text: 'text-iconTextBlue', icon: 'fa-regular fa-file-lines' },
+            'indigo-code': { bg: 'bg-iconBgIndigo', text: 'text-iconTextIndigo', icon: 'fa-solid fa-code' },
+            'indigo-cubes': { bg: 'bg-iconBgIndigo', text: 'text-iconTextIndigo', icon: 'fa-solid fa-cubes' },
+            'purple-help': { bg: 'bg-iconBgPurple', text: 'text-iconTextPurple', icon: 'fa-regular fa-circle-question' },
+            'green-slack': { bg: 'bg-iconBgGreen', text: 'text-iconTextGreen', icon: 'fa-brands fa-slack' },
+            'indigo-users': { bg: 'bg-iconBgIndigo', text: 'text-iconTextIndigo', icon: 'fa-solid fa-users' },
+            'indigo-box': { bg: 'bg-iconBgIndigo', text: 'text-iconTextIndigo', icon: 'fa-solid fa-box-open' },
+            'red-alert': { bg: 'bg-iconBgRed', text: 'text-iconTextRed', icon: 'fa-solid fa-triangle-exclamation' }
+        };
+
+        let currentLinks = [];
+        let isEditing = false;
+
+        // --- Quick Links Logic ---
+        function initQuickLinks() {
+            const stored = localStorage.getItem('quickLinks');
+            if (stored) {
+                try {
+                    currentLinks = JSON.parse(stored);
+                } catch(e) {
+                    currentLinks = [...defaultQuickLinks];
+                }
+            } else {
+                currentLinks = [...defaultQuickLinks];
+            }
+            renderQuickLinks();
+        }
+
+        function renderQuickLinks() {
+            const list = document.getElementById('quick-links-list');
+            list.innerHTML = '';
+
+            currentLinks.forEach((link, index) => {
+                const style = iconStyles[link.type] || iconStyles['purple-message'];
+                const li = document.createElement('li');
+                
+                li.innerHTML = `
+                    <div class="flex items-start group relative">
+                        <!-- Icon -->
+                        <div class="flex-shrink-0 pt-1">
+                            <div class="w-6 h-6 rounded ${style.bg} ${style.text} flex items-center justify-center text-xs theme-transition">
+                                <i class="${style.icon}"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Content -->
+                        <div class="ml-3 flex-1 overflow-hidden">
+                            <div class="flex items-center justify-between">
+                                <p class="text-xs font-semibold text-textMain group-hover:text-blue-600 truncate pr-2">${link.title}</p>
+                                
+                                <!-- Arrow (Normal Mode) -->
+                                <i class="fa-solid fa-chevron-right text-[10px] text-textSubtle group-hover:text-textMuted arrow-icon transition-colors"></i>
+                                
+                                <!-- Delete Button (Edit Mode) -->
+                                <button onclick="deleteLink(${index})" class="delete-btn text-red-500 hover:text-red-700 p-1 -mr-1 transition-colors" title="Remove Link">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                            <p class="text-[10px] text-textSubtle mt-0.5 truncate">${link.desc}</p>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        function toggleEditMode() {
+            isEditing = !isEditing;
+            const container = document.getElementById('quick-links-section');
+            const editBtn = document.getElementById('editLinksBtn');
+            const resetBtn = document.getElementById('resetLinksBtn');
+
+            if (isEditing) {
+                container.classList.add('editing');
+                editBtn.textContent = 'Done';
+                editBtn.classList.replace('text-blue-600', 'text-green-600');
+                editBtn.classList.replace('hover:text-blue-800', 'hover:text-green-800');
+                resetBtn.classList.remove('hidden');
+            } else {
+                container.classList.remove('editing');
+                editBtn.textContent = 'Edit';
+                editBtn.classList.replace('text-green-600', 'text-blue-600');
+                editBtn.classList.replace('hover:text-green-800', 'hover:text-blue-800');
+                resetBtn.classList.add('hidden');
+            }
+        }
+
+        function deleteLink(index) {
+            currentLinks.splice(index, 1);
+            saveLinks();
+            renderQuickLinks();
+        }
+
+        function resetLinks() {
+            if(confirm('Reset quick links to default?')) {
+                currentLinks = [...defaultQuickLinks];
+                saveLinks();
+                renderQuickLinks();
+                toggleEditMode(); // Exit edit mode on reset
+            }
+        }
+
+        function saveLinks() {
+            localStorage.setItem('quickLinks', JSON.stringify(currentLinks));
+        }
+
+        function addNewLink() {
+            const title = document.getElementById('linkTitle').value.trim();
+            const desc = document.getElementById('linkDesc').value.trim();
+            const type = document.getElementById('linkIconType').value;
+
+            if (!title) {
+                alert('Please enter a title');
+                return;
+            }
+
+            currentLinks.push({
+                id: Date.now(),
+                title: title,
+                desc: desc || "Custom Link",
+                type: type
+            });
+
+            saveLinks();
+            renderQuickLinks();
+            closeModal();
+            
+            // Clear inputs
+            document.getElementById('linkTitle').value = '';
+            document.getElementById('linkDesc').value = '';
+        }
+
+        // --- Modal Logic ---
+        const modal = document.getElementById('addLinkModal');
+        
+        function openModal() {
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            modal.classList.add('hidden');
+        }
+
+        // --- DRAG & DROP LOGIC ---
+        let dragSrcEl = null;
+
+        function initDragAndDrop() {
+            // Restore Order from LocalStorage
+            restoreWidgetOrder();
+
+            const container = document.getElementById('widgets-container');
+            const widgets = container.querySelectorAll('.draggable-widget');
+
+            widgets.forEach(widget => {
+                addDragEvents(widget);
+            });
+        }
+
+        function addDragEvents(widget) {
+            widget.addEventListener('dragstart', handleDragStart, false);
+            widget.addEventListener('dragenter', handleDragEnter, false);
+            widget.addEventListener('dragover', handleDragOver, false);
+            widget.addEventListener('dragleave', handleDragLeave, false);
+            widget.addEventListener('drop', handleDrop, false);
+            widget.addEventListener('dragend', handleDragEnd, false);
+        }
+
+        function handleDragStart(e) {
+            this.style.opacity = '0.4';
+            dragSrcEl = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/html', this.innerHTML);
+            this.classList.add('dragging');
+        }
+
+        function handleDragOver(e) {
+            if (e.preventDefault) {
+                e.preventDefault();
+            }
+            e.dataTransfer.dropEffect = 'move';
+            return false;
+        }
+
+        function handleDragEnter(e) {
+            this.classList.add('over');
+        }
+
+        function handleDragLeave(e) {
+            this.classList.remove('over');
+        }
+
+        function handleDrop(e) {
+            if (e.stopPropagation) {
+                e.stopPropagation();
+            }
+
+            if (dragSrcEl !== this) {
+                // Swap the DOM elements
+                // It's cleaner to swap them in the container than innerHTML
+                const container = document.getElementById('widgets-container');
+                
+                // Get all children as an array
+                const children = Array.from(container.children);
+                const fromIndex = children.indexOf(dragSrcEl);
+                const toIndex = children.indexOf(this);
+
+                if (fromIndex < toIndex) {
+                    this.after(dragSrcEl);
+                } else {
+                    this.before(dragSrcEl);
+                }
+                
+                saveWidgetOrder();
+            }
+            return false;
+        }
+
+        function handleDragEnd(e) {
+            this.style.opacity = '1';
+            this.classList.remove('dragging');
+            
+            const widgets = document.querySelectorAll('.draggable-widget');
+            widgets.forEach(function (widget) {
+                widget.classList.remove('over');
+            });
+        }
+
+        function saveWidgetOrder() {
+            const container = document.getElementById('widgets-container');
+            const widgetIds = Array.from(container.children).map(child => child.id);
+            localStorage.setItem('widgetOrder', JSON.stringify(widgetIds));
+        }
+
+        function restoreWidgetOrder() {
+            const storedOrder = localStorage.getItem('widgetOrder');
+            if (storedOrder) {
+                const order = JSON.parse(storedOrder);
+                const container = document.getElementById('widgets-container');
+                const widgets = Array.from(container.children);
+                
+                // Create a map for quick lookup
+                const widgetMap = {};
+                widgets.forEach(w => widgetMap[w.id] = w);
+
+                // Re-append in order
+                order.forEach(id => {
+                    if (widgetMap[id]) {
+                        container.appendChild(widgetMap[id]);
+                    }
+                });
+            }
+        }
+
+
+        // --- Event Listeners ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Init Sidebar Toggle
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('toggleSidebarBtn');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+
+            // Init Bars
+            createBars('mau-bars', 40);
+            createBars('pcc-bars', 40);
+            createBars('voice-bars', 40);
+            createBars('video-bars', 40);
+
+            // Init Theme
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            setTheme(savedTheme);
+
+            // Init Quick Links
+            initQuickLinks();
+
+            // Init Drag And Drop
+            initDragAndDrop();
+
+            // Edit/Reset Buttons
+            document.getElementById('editLinksBtn').addEventListener('click', toggleEditMode);
+            document.getElementById('resetLinksBtn').addEventListener('click', resetLinks);
+            document.getElementById('addLinkBtn').addEventListener('click', openModal);
+
+            // Modal Buttons
+            document.getElementById('cancelAddLink').addEventListener('click', closeModal);
+            document.getElementById('saveNewLink').addEventListener('click', addNewLink);
+            document.getElementById('modalOverlay').addEventListener('click', closeModal);
+        });
+
+        // Helper: Create Bars
+        function createBars(containerId, count) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            for (let i = 0; i < count; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'usage-bar';
+                container.appendChild(bar);
+            }
+        }
+    </script>
+</body>
+</html>

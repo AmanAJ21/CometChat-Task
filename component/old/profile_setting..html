@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Settings - CometChat Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Custom toggle switch style for the tabs */
+        .tab-active {
+            background-color: white;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            color: #111827;
+        }
+        
+        .tab-inactive {
+            color: #6B7280;
+        }
+        
+        .tab-inactive:hover {
+            color: #374151;
+        }
+
+        /* Vertical text for the side button */
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="w-full border-b border-gray-200 bg-white py-4 px-6 md:px-8 flex justify-between items-center sticky top-0 z-10">
+        <div class="flex items-center">
+            <!-- Logo -->
+            <a href="#" class="text-2xl font-bold tracking-tight">cometchat</a>
+        </div>
+        
+        <!-- User Profile -->
+        <div class="flex items-center">
+            <button class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                <i class="fas fa-user-circle text-3xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow flex flex-col items-center py-12 px-4 sm:px-6">
+        
+        <div class="w-full max-w-lg space-y-8">
+            
+            <!-- Page Title -->
+            <div class="text-center">
+                <h1 class="text-2xl font-semibold text-gray-900">Account Settings</h1>
+                <p class="mt-2 text-sm text-gray-500 font-light">Manage your personal information and account settings</p>
+            </div>
+
+            <!-- Tabs (Personal / Security) -->
+            <div class="bg-gray-100 p-1 rounded-lg flex justify-between items-center w-full max-w-xs mx-auto">
+                <button onclick="switchTab('personal')" id="tab-personal" class="tab-active w-1/2 py-1.5 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none">
+                    Personal
+                </button>
+                <button onclick="switchTab('security')" id="tab-security" class="tab-inactive w-1/2 py-1.5 text-sm font-medium rounded-md transition-all duration-200 focus:outline-none">
+                    Security
+                </button>
+            </div>
+
+            <!-- Form -->
+            <form class="space-y-6 mt-8" onsubmit="event.preventDefault(); alert('Settings Saved!');">
+                
+                <!-- Name Input -->
+                <div class="space-y-1">
+                    <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                    <input type="text" id="name" name="name" value="Aman Jangra" 
+                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black focus:border-black sm:text-sm">
+                </div>
+
+                <!-- Email Input -->
+                <div class="space-y-1">
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" name="email" value="amanjangraaj25+test@gmail.com" 
+                        class="block w-full px-3 py-2.5 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-black focus:border-black sm:text-sm">
+                </div>
+
+                <!-- Role Select -->
+                <div class="space-y-1">
+                    <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+                    <div class="relative">
+                        <select id="role" name="role" 
+                            class="block w-full pl-3 pr-10 py-2.5 text-base border border-gray-300 focus:outline-none focus:ring-1 focus:ring-black focus:border-black sm:text-sm rounded-md appearance-none bg-white">
+                            <option>Fullstack Developer</option>
+                            <option>Frontend Developer</option>
+                            <option>Backend Developer</option>
+                            <option>Product Manager</option>
+                            <option>Designer</option>
+                        </select>
+                        <!-- Custom Arrow Icon -->
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phone Number Input -->
+                <div class="space-y-1">
+                    <label for="phone" class="block text-sm font-medium text-gray-700">
+                        Phone No <span class="text-gray-400 font-normal">(Optional)</span>
+                    </label>
+                    <div class="flex rounded-md shadow-sm">
+                        <!-- Country Code Selector (Mock) -->
+                        <div class="relative flex items-center border border-r-0 border-gray-300 rounded-l-md bg-white px-3 py-2">
+                            <span class="flex items-center space-x-1 cursor-pointer">
+                                <!-- US Flag Icon (SVG) -->
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5 text-gray-500">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 .34-.028.675-.083 1H15a2 2 0 00-2 2v2.197A5.973 5.973 0 0110 18z" clip-rule="evenodd" style="display:none;" /> <!-- Fallback placeholder if flag needed -->
+                                    <!-- Simple US Flag SVG -->
+                                    <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-auto object-cover rounded-sm">
+                                        <rect width="20" height="15" fill="#B22234"/>
+                                        <rect y="1.5" width="20" height="1.5" fill="white"/>
+                                        <rect y="4.5" width="20" height="1.5" fill="white"/>
+                                        <rect y="7.5" width="20" height="1.5" fill="white"/>
+                                        <rect y="10.5" width="20" height="1.5" fill="white"/>
+                                        <rect y="13.5" width="20" height="1.5" fill="white"/>
+                                        <rect width="8" height="8.5" fill="#3C3B6E"/>
+                                    </svg>
+                                </span>
+                                <i class="fas fa-caret-down text-gray-400 ml-1 text-xs"></i>
+                            </span>
+                        </div>
+                        <input type="text" name="phone" id="phone" value="+1" 
+                            class="flex-1 block w-full border border-gray-300 rounded-r-md px-3 py-2.5 focus:outline-none focus:ring-1 focus:ring-black focus:border-black sm:text-sm">
+                    </div>
+                </div>
+
+                <!-- Save Button -->
+                <div class="pt-4">
+                    <button type="submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors">
+                        Save
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- Floating Chat Button -->
+    <div class="fixed right-0 bottom-1/4 z-50 transform translate-x-0">
+        <button class="bg-[#635BFF] hover:bg-[#534be0] text-white py-4 px-1 rounded-l-md shadow-lg flex items-center justify-center transition-colors">
+            <span class="vertical-text text-sm font-medium tracking-wide" style="writing-mode: vertical-rl; text-orientation: mixed;">Chat with us</span>
+        </button>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            const personalTab = document.getElementById('tab-personal');
+            const securityTab = document.getElementById('tab-security');
+
+            if (tabName === 'personal') {
+                personalTab.classList.remove('tab-inactive', 'bg-transparent');
+                personalTab.classList.add('tab-active');
+                
+                securityTab.classList.remove('tab-active');
+                securityTab.classList.add('tab-inactive');
+            } else {
+                securityTab.classList.remove('tab-inactive', 'bg-transparent');
+                securityTab.classList.add('tab-active');
+                
+                personalTab.classList.remove('tab-active');
+                personalTab.classList.add('tab-inactive');
+            }
+        }
+    </script>
+</body>
+</html>
